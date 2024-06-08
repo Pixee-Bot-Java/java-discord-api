@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -109,7 +110,7 @@ public class ClassFileUtil {
         ZipInputStream zip,
         String entryName
     ) throws IOException {
-        File tempFile = File.createTempFile(entryName.replace('/', '_'), ".class");
+        File tempFile = Files.createTempFile(entryName.replace('/', '_'), ".class").toFile();
         tempFile.deleteOnExit();
         try (FileOutputStream fos = new FileOutputStream(tempFile)) {
             byte[] buffer = new byte[1024];
