@@ -1,5 +1,6 @@
 package com.javadiscord.jdi.core.processor;
 
+import io.github.pixee.security.ZipSecurity;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,7 +38,7 @@ public class ClassFileUtil {
             DataInputStream dis = new DataInputStream(fis)
         ) {
             if (isJarFile(file)) {
-                try (ZipInputStream zip = new ZipInputStream(fis)) {
+                try (ZipInputStream zip = ZipSecurity.createHardenedInputStream(fis)) {
                     ZipEntry entry;
                     while ((entry = zip.getNextEntry()) != null) {
                         if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
@@ -80,7 +81,7 @@ public class ClassFileUtil {
         List<File> classFiles = new ArrayList<>();
         try (
             FileInputStream fis = new FileInputStream(jarFile);
-            ZipInputStream zip = new ZipInputStream(fis)
+            ZipInputStream zip = ZipSecurity.createHardenedInputStream(fis)
         ) {
             ZipEntry entry;
             while ((entry = zip.getNextEntry()) != null) {
